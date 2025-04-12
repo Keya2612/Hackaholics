@@ -47,6 +47,9 @@ Traditional methods fail to simulate real interview experiences or provide data-
 ![WhatsApp Image 2025-04-12 at 16 13 38_66206b67](https://github.com/user-attachments/assets/2484c5bb-59e1-4d11-9995-15d5f93046ac)
 
 
+![Screenshot 2025-04-12 160004](https://github.com/user-attachments/assets/53ca4c8e-180e-423d-a4e3-a917d3cf9997)
+
+
 ## 🌟 Features
 
 ### ✅ Completed Modules
