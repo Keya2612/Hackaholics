@@ -1,39 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import SignInModal from '../auth/sign_in';
-import SignUpModal from '../auth/sign_up';
-import ForgotPasswordModal from '../auth/forget_password';
+import Link from "next/link";
+import { SignInButton, useUser } from "@clerk/nextjs";
 
 export default function Header() {
-  const [isSignInOpen, setIsSignInOpen] = useState(false);
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
-  
-  const openSignIn = () => {
-    setIsSignInOpen(true);
-    setIsSignUpOpen(false);
-    setIsForgotPasswordOpen(false);
-  };
-  
-  const openSignUp = () => {
-    setIsSignUpOpen(true);
-    setIsSignInOpen(false);
-    setIsForgotPasswordOpen(false);
-  };
-  
-  const openForgotPassword = () => {
-    setIsForgotPasswordOpen(true);
-    setIsSignInOpen(false);
-    setIsSignUpOpen(false);
-  };
-  
-  const closeModals = () => {
-    setIsSignInOpen(false);
-    setIsSignUpOpen(false);
-    setIsForgotPasswordOpen(false);
-  };
+  const { isSignedIn } = useUser();
 
   return (
     <header className="bg-white border-b border-gray-200">
@@ -50,32 +21,23 @@ export default function Header() {
           <Link href="/dashboard" className="text-gray-600 hover:text-gray-800">
             Dashboard
           </Link>
-          <button 
-            onClick={openSignIn} 
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-          >
-            Sign In
-          </button>
+          {isSignedIn ? (
+            <Link
+              href="/dashboard"
+              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+            >
+              Go to Dashboard
+            </Link>
+          ) : (
+            <SignInButton
+              mode="modal"
+              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+            >
+              Sign In
+            </SignInButton>
+          )}
         </nav>
       </div>
-      
-      {/* Modal components */}
-      <SignInModal 
-        isOpen={isSignInOpen} 
-        onClose={closeModals} 
-        openSignUp={openSignUp}
-        openForgotPassword={openForgotPassword}
-      />
-      <SignUpModal 
-        isOpen={isSignUpOpen} 
-        onClose={closeModals} 
-        openSignIn={openSignIn} 
-      />
-      <ForgotPasswordModal
-        isOpen={isForgotPasswordOpen}
-        onClose={closeModals}
-        openSignIn={openSignIn}
-      />
     </header>
   );
 }
