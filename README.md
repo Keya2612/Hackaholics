@@ -1,36 +1,172 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Interview Simulation
 
-## Getting Started
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-First, run the development server:
+## Description
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+SpeakSpace – GD and Interview Skill Builder
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+	Project Overview
+	Objective
+To prepare students for real-world placement processes using an AI-powered simulator that focuses on learning, practice, and mock interview simulations.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+	Problem Statement
+Students often struggle with placement interviews due to lack of proper preparation, unclear learning paths, and no real-time feedback. Traditional methods don’t offer personalized insights or practical simulations.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+	Our Solution
+An AI-based platform that provides a guided learning phase followed by an intelligent interview simulation. It gives personalized feedback, tracks progress, and enables practice with real-time AI agents.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+	What We Have Built Till Now
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Aptitude Learning + Practice
+- Added structured learning materials for all aptitude topics.
+- Integrated practice tests based on those topics.
+- If the student gets answers wrong, correct solutions are   provided with explanations.
+- Progress tracking is implemented to show improvement.
+
+2. Group Discussion (GD) Learning
+- Added GD learning modules covering:
+  - Communication skills
+  - How to start and contribute
+  - What to avoid in a GD
+  - Body language tips
+- Designed a clean, unique dashboard to show combined progress from all sections.
+
+
+
+
+
+	What We Will Add Next
+1. Mock Interview Simulation
+- Users can choose job role and experience level (fresher/intermediate).
+- AI asks real-time HR and technical questions tailored to their choice.
+- User answers via voice input, and AI analyzes speech: tone, confidence, clarity.
+- At the end:
+  - Score is generated
+  - Feedback is given
+  - Improvement suggestions are displayed
+
+2. Adaptive Redirection System
+- If a user fails the aptitude test in the simulation phase:
+  - They’ll be automatically redirected to the specific learning module where they lack.
+
+3. GD Practice with AI Agents
+- Users can speak in real-time in a mock GD with AI agents.
+- Speech is analyzed for confidence, relevance, clarity.
+- Feedback and scoring are provided.
+
+	Conclusion, Tech Stack, and Future Scope
+Conclusion
+Our AI Simulator bridges the gap between theory and practice by providing structured learning, intelligent analysis, and real-time simulations. It boosts confidence and makes students industry-ready.
+
+Tech Stack Used
+- Frontend: Next.js, Tailwind CSS
+- Backend: Node.js, Supabase
+- AI Integration:  Gemini AI
+- Storage & DB:  Supabase
+
+Future Scope
+- Add company-specific interview simulators
+- Include video-based GD sessions with peer groups
+- Develop mobile app version for quick practice
+- Enable CV/Resume analysis and feedback
+
+
+## Table of Contents
+
+- [Description](#description)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [License](#license)
+## Features
+
+* SpeakSpace – GD and Interview Skill Builder
+* 
+* 	Project Overview
+* 	Objective
+* To prepare students for real-world placement processes using an AI-powered simulator that focuses on learning, practice, and mock interview simulations.
+* 
+* 	Problem Statement
+* Students often struggle with placement interviews due to lack of proper preparation, unclear learning paths, and no real-time feedback. Traditional methods don’t offer personalized insights or practical simulations.
+* 
+* 	Our Solution
+* An AI-based platform that provides a guided learning phase followed by an intelligent interview simulation. It gives personalized feedback, tracks progress, and enables practice with real-time AI agents.
+* 
+* 
+* 
+* 
+* 
+* 	What We Have Built Till Now
+* 
+* 
+* 1. Aptitude Learning + Practice
+* - Added structured learning materials for all aptitude topics.
+* - Integrated practice tests based on those topics.
+* - If the student gets answers wrong, correct solutions are   provided with explanations.
+* - Progress tracking is implemented to show improvement.
+* 
+* 2. Group Discussion (GD) Learning
+* - Added GD learning modules covering:
+* - Communication skills
+* - How to start and contribute
+* - What to avoid in a GD
+* - Body language tips
+* - Designed a clean, unique dashboard to show combined progress from all sections.
+* 
+* 
+* 
+* 
+* 
+* 	What We Will Add Next
+* 1. Mock Interview Simulation
+* - Users can choose job role and experience level (fresher/intermediate).
+* - AI asks real-time HR and technical questions tailored to their choice.
+* - User answers via voice input, and AI analyzes speech: tone, confidence, clarity.
+* - At the end:
+* - Score is generated
+* - Feedback is given
+* - Improvement suggestions are displayed
+* 
+* 2. Adaptive Redirection System
+* - If a user fails the aptitude test in the simulation phase:
+* - They’ll be automatically redirected to the specific learning module where they lack.
+* 
+* 3. GD Practice with AI Agents
+* - Users can speak in real-time in a mock GD with AI agents.
+* - Speech is analyzed for confidence, relevance, clarity.
+* - Feedback and scoring are provided.
+* 
+* 	Conclusion, Tech Stack, and Future Scope
+* Conclusion
+* Our AI Simulator bridges the gap between theory and practice by providing structured learning, intelligent analysis, and real-time simulations. It boosts confidence and makes students industry-ready.
+* 
+* Tech Stack Used
+* - Frontend: Next.js, Tailwind CSS
+* - Backend: Node.js, Supabase
+* - AI Integration:  Gemini AI
+* - Storage & DB:  Supabase
+* 
+* Future Scope
+* - Add company-specific interview simulators
+* - Include video-based GD sessions with peer groups
+* - Develop mobile app version for quick practice
+* - Enable CV/Resume analysis and feedback
+* 
+
+## Tech Stack
+
+* Frontend: Next.js, Tailwind CSS
+* - Backend: Node.js, Supabase
+* - AI Integration:  Gemini AI
+* - Storage & DB:  Supabase
+* 
+
+## License
+
+This project is licensed under the MIT License.
+
