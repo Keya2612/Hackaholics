@@ -2,41 +2,66 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "../../../lib/supabase";
 import { tabs, progressData } from "./data";
+import { learningContent } from "./learningContent";
 
 const Learning = () => {
   const [activeTab, setActiveTab] = useState("quantitative");
-  const [categoryProgressMap, setCategoryProgressMap] = useState(() => {
-    // Initialize with static progressData to ensure SSR consistency
-    const initialMap = {};
-    tabs.forEach((tab) => {
-      initialMap[tab.id] = {};
-      Object.keys(progressData[tab.id] || {}).forEach((category) => {
-        const items = progressData[tab.id][category];
-        const total = items.reduce((sum, item) => sum + (item.progress || 0), 0);
-        initialMap[tab.id][category] = items.length > 0 ? Math.round(total / items.length) : 0;
-      });
-    });
-    return initialMap;
-  });
+  const [categoryProgressMap, setCategoryProgressMap] = useState({});
   const router = useRouter();
+  const userId = "user1"; // Replace with auth.uid() in a real app
 
-  // Load progress from localStorage on client side after mount
+  // Fetch progress from Supabase
   useEffect(() => {
-    const updatedMap = { ...categoryProgressMap };
-    tabs.forEach((tab) => {
-      updatedMap[tab.id] = { ...updatedMap[tab.id] };
-      Object.keys(progressData[tab.id] || {}).forEach((category) => {
-        const savedProgress = localStorage.getItem(`progress_${tab.id}_${category}`);
-        if (savedProgress) {
-          const items = JSON.parse(savedProgress);
-          const total = items.reduce((sum, item) => sum + (item.progress || 0), 0);
-          updatedMap[tab.id][category] = items.length > 0 ? Math.round(total / items.length) : 0;
+    const fetchProgress = async () => {
+      const progressMap = {};
+
+      for (const tab of tabs) {
+        progressMap[tab.id] = {};
+        const categories = Object.keys(progressData[tab.id] || {});
+
+        for (const category of categories) {
+          const { data, error } = await supabase
+            .from("user_progress")
+            .select("topic, resource_type, completed")
+            .eq("user_id", userId)
+            .eq("tab", tab.id)
+            .eq("category", category);
+
+          if (error) {
+            console.error(`Error fetching progress for ${tab.id}/${category}:`, error);
+            progressMap[tab.id][category] = 0;
+            continue;
+          }
+
+          const topics = progressData[tab.id][category];
+          let totalProgress = 0;
+
+          topics.forEach((topic) => {
+            const content = learningContent[tab.id]?.[category]?.[topic.title] || {};
+            const youtubeCompleted = data.find(
+              (item) => item.topic === topic.title && item.resource_type === "youtube"
+            )?.completed || false;
+            const pdfCompleted = data.find(
+              (item) => item.topic === topic.title && item.resource_type === "pdf"
+            )?.completed || false;
+            const resourceCount =
+              (content.youtubeLink ? 1 : 0) + (content.pdfLink ? 1 : 0);
+            const completedCount = (youtubeCompleted ? 1 : 0) + (pdfCompleted ? 1 : 0);
+            const progress = resourceCount > 0 ? Math.round((completedCount / resourceCount) * 100) : 0;
+            totalProgress += progress;
+          });
+
+          progressMap[tab.id][category] = topics.length > 0 ? Math.round(totalProgress / topics.length) : 0;
         }
-      });
-    });
-    setCategoryProgressMap(updatedMap);
-  }, []); // Empty dependency array to run once after mount
+      }
+
+      setCategoryProgressMap(progressMap);
+    };
+
+    fetchProgress();
+  }, []); // Run once on mount
 
   // Helper function to determine text color based on progress
   const getTextColorClass = (progress) => {

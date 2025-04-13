@@ -3,11 +3,13 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { supabase } from "../../../../../lib/supabase";
 import { progressData, tabs } from "../../../learning/data";
 import { learningContent } from "../../../learning/learningContent";
 
 const CategoryLearning = () => {
   const { tab, category } = useParams();
+  const userId = "user1"; // Replace with actual auth.uid() in a real app
 
   // Find tab name for display
   const tabData = tabs.find((t) => t.id === tab);
@@ -23,63 +25,129 @@ const CategoryLearning = () => {
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [currentPdfUrl, setCurrentPdfUrl] = useState("");
 
-  // State to track checkbox status and topics
-  const [completionStatus, setCompletionStatus] = useState(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(`completion_${tab}_${category}`);
-      return saved ? JSON.parse(saved) : {};
-    }
-    return {};
-  });
+  // State to track checkbox status
+  const [completionStatus, setCompletionStatus] = useState({});
 
   // State to track topics and their progress
-  const [topics, setTopics] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedProgress = localStorage.getItem(`progress_${tab}_${category}`);
-      return savedProgress
-        ? JSON.parse(savedProgress)
-        : initialTopics.map((topic) => ({ ...topic, progress: 0 }));
-    }
-    return initialTopics.map((topic) => ({ ...topic, progress: 0 }));
-  });
+  const [topics, setTopics] = useState(
+    initialTopics.map((topic) => ({ ...topic, progress: 0 }))
+  );
 
-  // Save to localStorage and update progress whenever completionStatus changes
+  // Fetch completion status from Supabase
   useEffect(() => {
-    // Save completion status
-    localStorage.setItem(
-      `completion_${tab}_${category}`,
-      JSON.stringify(completionStatus)
-    );
+    const fetchCompletionStatus = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("user_progress")
+          .select("topic, resource_type, completed")
+          .eq("user_id", userId)
+          .eq("tab", tab)
+          .eq("category", category);
 
-    // Calculate and update progress for each topic
-    const updatedTopics = topics.map((topic) => {
-      const youtubeCompleted = completionStatus[`${topic.title}_youtube`] || false;
-      const pdfCompleted = completionStatus[`${topic.title}_pdf`] || false;
-      const resourceCount =
-        (content[topic.title]?.youtubeLink ? 1 : 0) +
-        (content[topic.title]?.pdfLink ? 1 : 0);
-      const completedCount = (youtubeCompleted ? 1 : 0) + (pdfCompleted ? 1 : 0);
-      const progress = resourceCount > 0 ? Math.round((completedCount / resourceCount) * 100) : 0;
+        if (error) {
+          console.error("Error fetching completion status:", error);
+          return;
+        }
 
-      return { ...topic, progress };
-    });
+        const status = {};
+        data.forEach((item) => {
+          status[`${item.topic}_${item.resource_type}`] = item.completed;
+        });
 
-    // Update topics state
-    setTopics(updatedTopics);
+        setCompletionStatus(status);
 
-    // Save updated progress to localStorage
-    localStorage.setItem(
-      `progress_${tab}_${category}`,
-      JSON.stringify(updatedTopics)
-    );
-  }, [completionStatus, tab, category, content]);
+        // Calculate initial progress based on fetched data
+        const updatedTopics = initialTopics.map((topic) => {
+          const youtubeCompleted = status[`${topic.title}_youtube`] || false;
+          const pdfCompleted = status[`${topic.title}_pdf`] || false;
+          const resourceCount =
+            (content[topic.title]?.youtubeLink ? 1 : 0) +
+            (content[topic.title]?.pdfLink ? 1 : 0);
+          const completedCount = (youtubeCompleted ? 1 : 0) + (pdfCompleted ? 1 : 0);
+          const progress = resourceCount > 0 ? Math.round((completedCount / resourceCount) * 100) : 0;
 
-  // Handle checkbox change
-  const handleCheckboxChange = (topicTitle, resourceType) => {
-    setCompletionStatus((prev) => ({
-      ...prev,
-      [`${topicTitle}_${resourceType}`]: !prev[`${topicTitle}_${resourceType}`],
-    }));
+          return { ...topic, progress };
+        });
+
+        setTopics(updatedTopics);
+      } catch (err) {
+        console.error("Unexpected error:", err);
+      }
+    };
+
+    fetchCompletionStatus();
+  }, [tab, category, userId]);
+
+  // Handle checkbox change and update Supabase
+  const handleCheckboxChange = async (topicTitle, resourceType) => {
+    const key = `${topicTitle}_${resourceType}`;
+    const newStatus = !completionStatus[key];
+
+    try {
+      // Update local state immediately for responsiveness
+      setCompletionStatus((prev) => ({
+        ...prev,
+        [key]: newStatus,
+      }));
+
+      // Update Supabase
+      const { error } = await supabase
+        .from("user_progress")
+        .upsert(
+          {
+            user_id: userId,
+            tab,
+            category,
+            topic: topicTitle,
+            resource_type: resourceType,
+            completed: newStatus,
+          },
+          {
+            onConflict: ["user_id", "tab", "category", "topic", "resource_type"],
+          }
+        );
+
+      if (error) {
+        console.error("Error updating Supabase:", error);
+        // Revert state if Supabase update fails
+        setCompletionStatus((prev) => ({
+          ...prev,
+          [key]: !newStatus,
+        }));
+        return;
+      }
+
+      // Update topic progress
+      setTopics((prevTopics) =>
+        prevTopics.map((topic) => {
+          if (topic.title === topicTitle) {
+            const youtubeCompleted =
+              resourceType === "youtube"
+                ? newStatus
+                : completionStatus[`${topic.title}_youtube`] || false;
+            const pdfCompleted =
+              resourceType === "pdf"
+                ? newStatus
+                : completionStatus[`${topic.title}_pdf`] || false;
+            const resourceCount =
+              (content[topic.title]?.youtubeLink ? 1 : 0) +
+              (content[topic.title]?.pdfLink ? 1 : 0);
+            const completedCount = (youtubeCompleted ? 1 : 0) + (pdfCompleted ? 1 : 0);
+            const progress = resourceCount > 0 ? Math.round((completedCount / resourceCount) * 100) : 0;
+
+            return { ...topic, progress };
+          }
+          return topic;
+        })
+      );
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      // Revert state on unexpected error
+      setCompletionStatus((prev) => ({
+        ...prev,
+        [key]: !newStatus,
+      }));
+    }
   };
 
   // Open PDF modal

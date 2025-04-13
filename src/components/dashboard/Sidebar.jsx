@@ -38,7 +38,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
       hasDropdown: true,
       dropdownItems: [
         { id: "gd-learning", name: "Learning", path: "/GD/learning" },
-        { id: "gd-practice", name: "Practice", path: "/group-discussion/practice" },
+        { id: "gd-practice", name: "Practice", path: "/GD/practice" },
       ],
     },
     {
@@ -58,6 +58,13 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
       hasDropdown: false,
       path: "/analytics",
     },
+    {
+      id: "profile",
+      name: "Profile",
+      icon: <User className="w-5 h-5" />,
+      hasDropdown: false,
+      path: "/profile",
+    }
   ];
 
   // Helper function to safely check if activeSection starts with a prefix

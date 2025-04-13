@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Clock, Calendar, BookOpen, Users, User } from "lucide-react";
+import Header from "../../components/landing_page/Header";
 import {
   ResponsiveContainer,
   BarChart,
@@ -50,7 +51,10 @@ export default function Dashboard() {
   }
 
   return (
-<Overview user={user} />
+    <>
+    <Header />
+    <Overview user={user} />
+    </>
   );
 }
 
