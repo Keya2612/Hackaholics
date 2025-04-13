@@ -52,6 +52,14 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
       ],
     },
     {
+      id: "Resumeanalyzer",
+      name: "Resume analyzer",
+      icon: <BarChart className="w-5 h-5" />,
+      hasDropdown: false,
+      path: "/resumetip",
+    },
+
+    {
       id: "profile",
       name: "Profile",
       icon: <User className="w-5 h-5" />,
@@ -60,10 +68,12 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
     }
   ];
 
+  // Helper function to safely check if activeSection starts with a prefix
   const isActive = (sectionId) => {
     return activeSection && activeSection.toString().startsWith(sectionId);
   };
 
+  // Handle navigation and active section setting
   const handleItemClick = (sectionId, path) => {
     setActiveSection(sectionId);
     router.push(path);
