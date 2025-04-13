@@ -1,0 +1,192 @@
+/* styles/GroupDiscussion.module.css */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .startSection {
+    text-align: center;
+    margin: 4rem 0;
+  }
+  
+  .startButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .startButton:hover {
+    background-color: #388E3C;
+  }
+  
+  .startButton:disabled {
+    background-color: #A5D6A7;
+    cursor: not-allowed;
+  }
+  
+  .topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .timer {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .chatContainer {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+  }
+  
+  .message {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border-left: 4px solid;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .messageSender {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+  
+  .userMessage {
+    border-left-color: green;
+    margin-left: 2rem;
+    margin-right: 0;
+  }
+  
+  .aiMessage {
+    margin-right: 2rem;
+    margin-left: 0;
+  }
+  
+  .inputArea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  
+  .micContainer {
+    text-align: center;
+  }
+  
+  .micButton {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 160px;
+  }
+  
+  .micButton:hover {
+    background-color: #1976D2;
+  }
+  
+  .micButton.listening {
+    background-color: #F44336;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .listeningIndicator {
+    margin-top: 0.5rem;
+    color: #F44336;
+    font-weight: bold;
+  }
+  
+  .waitingMessage {
+    color: #555;
+    font-style: italic;
+  }
+  
+  .discussionEnded {
+    text-align: center;
+  }
+  
+  .typingIndicator {
+    display: flex;
+    padding: 6px 12px;
+    width: fit-content;
+    border-radius: 20px;
+    margin: 10px 0;
+    background-color: #e0e0e0;
+  }
+  
+  .typingIndicator span {
+    height: 8px;
+    width: 8px;
+    margin: 0 1px;
+    background-color: #999;
+    border-radius: 50%;
+    display: inline-block;
+    animation: bouncing 1.3s infinite;
+  }
+  
+  .typingIndicator span:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .typingIndicator span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .typingIndicator span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes bouncing {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+    
+    .chatContainer {
+      height: 350px;
+    }
+  }

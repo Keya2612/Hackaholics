@@ -11,18 +11,38 @@ export async function POST(req) {
     }
 
     const topic = `🔢 Quantitative Aptitude
-Number System, Divisibility Rules, HCF & LCM, Remainders, Factorials, Base Conversions,
-Simplification & Approximation, BODMAS, Surds and Indices, Percentage,
-Profit, Loss & Discount, Simple Interest & Compound Interest, Ratio and Proportion,
-Average, Mixtures and Alligations, Time, Speed and Distance, Trains, Boats & Streams,
-Time and Work, Pipes and Cisterns, Mensuration, Permutations and Combinations,
-Probability, Algebra, Geometry, Trigonometry, Logarithms
+Number System, Divisibility Rules, Prime and Composite Numbers, HCF & LCM, Properties of Numbers,
+Remainders, Unit Digit Calculation, Factorials, Base Conversions, Simplification & Approximation, BODMAS,
+Surds and Indices, Percentage, Ratio and Proportion, Average, Profit, Loss & Discount,
+Simple Interest & Compound Interest, Time, Speed and Distance, Trains, Boats & Streams,
+Time and Work, Pipes and Cisterns, Mixtures and Alligations, Progressions, Logarithms,
+Basic Algebraic Expressions, Linear Equations, Quadratic Equations, Inequalities, Functions,
+Set Theory, Geometry, Mensuration, Coordinate Geometry, Trigonometry,
+Permutations and Combinations, Probability
 
 🧠 Logical Reasoning & Analytical Ability
-Series, Coding-Decoding, Blood Relations, Direction Sense, Syllogisms, Puzzles, Data Sufficiency
+Syllogisms, Logical Deductions, Statement and Conclusions, Statement and Arguments, 
+Statement and Assumptions, Course of Action, Series Completion, Analogies, Classification, Pattern Recognition,
+Linear Arrangements, Circular Arrangements, Complex Arrangements, 
+Blood Relations, Coding-Decoding, Direction Sense, Data Sufficiency, Puzzles, 
+Calendar and Clocks, Critical Reasoning
+
+📚 Verbal Ability
+Synonyms and Antonyms, Analogies, Fill in the Blanks, Idioms and Phrases, One Word Substitution,
+Sentence Correction, Error Spotting, Tenses, Articles and Prepositions, Subject-Verb Agreement, Parts of Speech,
+Reading Comprehension, Sentence Rearrangement, Verbal Analogies, Cloze Test
 
 📊 Data Interpretation
-Bar Graphs, Pie Charts, Line Graphs, Tables, Caselets, Data Comparison`;
+Tables, Bar Graphs, Pie Charts, Line Graphs, Caselets, Data Comparison,
+Data Sufficiency, Puzzles, Critical Reasoning
+
+🌀 Abstract Reasoning
+Figural Series Completion, Figural Analogies, Figural Classification, Mirror Images,
+Water Images, Paper Folding
+
+🎯 Situational Judgement
+Workplace Scenarios, Decision Making, Evaluating Responses`;
+
 
     // Extract subtopics for later use
     const subtopics = topic
@@ -63,7 +83,8 @@ Bar Graphs, Pie Charts, Line Graphs, Tables, Caselets, Data Comparison`;
 For each question:
 1. Include exactly 4 options labeled A, B, C, and D
 2. Clearly indicate one correct answer
-3. Format the response as a valid JSON array of objects with this structure:
+3. All questions should be on unique topics, with each topic selected randomly and without repetition.
+4. Format the response as a valid JSON array of objects with this structure:
 [
   {
     "question": "Question text here?",

@@ -1,4 +1,3 @@
-
 'use client';
 import { useState } from 'react';
 
@@ -21,27 +20,20 @@ const QuestionForm = ({ onQuestionsGenerated, setLoading, setError }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({  numQuestions: parseInt(numQuestions) }),
+        body: JSON.stringify({ numQuestions: parseInt(numQuestions) }),
       });
 
       const data = await response.json();
-      console.log('API Response:', data); // Log the raw API response
+      console.log('API Response:', data);
       if (!response.ok) {
         throw new Error(data.error || 'Failed to generate questions');
       }
 
-      // Log the raw API response
-
-      
-      // Ensure the data is in the correct format without modifying its structure
       let processedData = data;
-      
-      // If data isn't an array but has a questions property that is an array, use that
       if (!Array.isArray(data) && data.questions && Array.isArray(data.questions)) {
         processedData = data.questions;
       }
       
-      // Call the parent callback with the data
       onQuestionsGenerated(processedData, topic);
     } catch (err) {
       console.error('Error generating questions:', err);
@@ -56,7 +48,6 @@ const QuestionForm = ({ onQuestionsGenerated, setLoading, setError }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-     
       {localError && (
         <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
           <p className="text-sm text-red-700">{localError}</p>

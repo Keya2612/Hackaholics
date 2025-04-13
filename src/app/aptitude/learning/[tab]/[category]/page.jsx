@@ -25,15 +25,15 @@ const CategoryLearning = () => {
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [currentPdfUrl, setCurrentPdfUrl] = useState("");
 
-  // State to track checkbox status
+  // State for completion status
   const [completionStatus, setCompletionStatus] = useState({});
 
-  // State to track topics and their progress
+  // State for topics
   const [topics, setTopics] = useState(
     initialTopics.map((topic) => ({ ...topic, progress: 0 }))
   );
 
-  // Fetch completion status from Supabase
+  // Fetch completion status from Supabase on mount
   useEffect(() => {
     const fetchCompletionStatus = async () => {
       try {
@@ -49,6 +49,7 @@ const CategoryLearning = () => {
           return;
         }
 
+        // Build completion status object
         const status = {};
         data.forEach((item) => {
           status[`${item.topic}_${item.resource_type}`] = item.completed;
@@ -56,7 +57,7 @@ const CategoryLearning = () => {
 
         setCompletionStatus(status);
 
-        // Calculate initial progress based on fetched data
+        // Calculate initial topic progress based on fetched data
         const updatedTopics = initialTopics.map((topic) => {
           const youtubeCompleted = status[`${topic.title}_youtube`] || false;
           const pdfCompleted = status[`${topic.title}_pdf`] || false;
@@ -84,7 +85,7 @@ const CategoryLearning = () => {
     const newStatus = !completionStatus[key];
 
     try {
-      // Update local state immediately for responsiveness
+      // Optimistically update local state
       setCompletionStatus((prev) => ({
         ...prev,
         [key]: newStatus,
@@ -109,7 +110,7 @@ const CategoryLearning = () => {
 
       if (error) {
         console.error("Error updating Supabase:", error);
-        // Revert state if Supabase update fails
+        // Revert optimistic update on failure
         setCompletionStatus((prev) => ({
           ...prev,
           [key]: !newStatus,
@@ -142,7 +143,7 @@ const CategoryLearning = () => {
       );
     } catch (err) {
       console.error("Unexpected error:", err);
-      // Revert state on unexpected error
+      // Revert optimistic update on unexpected error
       setCompletionStatus((prev) => ({
         ...prev,
         [key]: !newStatus,
@@ -152,7 +153,7 @@ const CategoryLearning = () => {
 
   // Open PDF modal
   const openPdfModal = (pdfUrl) => {
-    const resolvedUrl = pdfUrl.startsWith("/") ? pdfUrl : `/${pdfUrl}`;
+    const resolvedUrl = pdfUrl;
     setCurrentPdfUrl(resolvedUrl);
     setShowPdfModal(true);
   };
@@ -292,7 +293,10 @@ const CategoryLearning = () => {
               </button>
             </div>
             <div className="flex-1 p-2 overflow-hidden">
-              <iframe
+              <embed
+                type="application/pdf"
+                width="100%"
+                height="100%"
                 src={currentPdfUrl}
                 title="PDF Viewer"
                 className="w-full h-full border-0"
